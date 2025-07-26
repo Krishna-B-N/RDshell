@@ -114,7 +114,7 @@ $ftppassword = "password"
 
 ```
 
-**Note: Now that everything is set you need to run put.ps1 and get.ps1 on the reverse shell (here on in future after you close this shell you have and ge a new one there is no need to run the get.ps1 and put.ps1 again.)**
+**Note: Now that everything is set you need to run put.ps1 and get.ps1 on the reverse shell (here on in future after you close this shell and open a new one there is no need to run the get.ps1 and put.ps1 again.)**
 
 ---
 
