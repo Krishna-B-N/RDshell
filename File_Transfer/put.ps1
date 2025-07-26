@@ -3,5 +3,5 @@ param(
     [String]$file
 )
 $path=(Get-Location).Path+"\"+$file
-Invoke-WebRequest -Uri "http://$IPP/$file" -OutFile "$path"
+Invoke-WebRequest -Uri "http://$IP/$file" -OutFile "$path"
 }

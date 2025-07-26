@@ -1,1 +1,1 @@
-$IPP="192.168.1.16:8000"
+$IP="192.168.1.16:8000" #Your Meachine IP address
